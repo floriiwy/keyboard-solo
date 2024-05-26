@@ -33,11 +33,6 @@ function updateWord() {
     const wordLetters = Array.from(currentWord).map((letter, index) => {
         const span = document.createElement('span');
         span.innerText = letter;
-        if (index < currentLetterIndex) {
-            span.classList.add('c');
-        } else if (index === currentLetterIndex) {
-            span.classList.add('w');
-        }
         return span;
     });
     wordContainer.innerHTML = '';
@@ -78,6 +73,9 @@ function endGame() {
 function handleKeyDown(event) {
     const key = event.key.toLowerCase();
     if (key === currentWord[currentLetterIndex]) {
+        const wordLetters = wordContainer.querySelectorAll('span');
+        const currentLetterSpan = wordLetters[currentLetterIndex];
+        currentLetterSpan.classList = 'c';
         currentLetterIndex++;
         if (currentLetterIndex === 1 && startTime === null) {
             startTimer();
@@ -95,16 +93,12 @@ function handleKeyDown(event) {
                 generateNewWord();
             }
         }
-        updateWord();
     } else {
         wordMistakes++;
         updateStats();
         const wordLetters = wordContainer.querySelectorAll('span');
         const currentLetterSpan = wordLetters[currentLetterIndex];
-        currentLetterSpan.classList.add('word_incorrect');
-        setTimeout(function() {
-            currentLetterSpan.classList.remove('word_incorrect');
-        }, 500);
+        currentLetterSpan.classList = 'w';
     }
 }
 
